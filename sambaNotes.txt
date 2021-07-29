@@ -1,0 +1,32 @@
+sudo nano /etc/samba/smb.conf
+
+# append to end of file
+
+[sambashare]
+comment = Samba on Ubuntu
+path = /home/brian/Documents/sambashare
+read only = no
+browsable = yes
+
+[sambahdd]
+comment = Samba on Ubuntu
+path = /media/brian/BFOSTDEV1TB
+read only = no
+browsable = yes
+
+sudo service smbd restart
+
+sudo ufw allow samba
+
+sudo smbpasswd -a username
+
+Linux/macOS:
+FileManager/ Finder
+Go/Connect To Server
+
+smb://192.168.0.22/sambashare
+smb://192.168.0.22/sambahdd
+
+Windows:
+
+\\192.168.0.22\sambashare

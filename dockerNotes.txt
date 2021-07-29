@@ -1,0 +1,169 @@
+## ##############################
+## Part 1 - from django app and mock server in Docker
+## ##############################
+## start asdf core container from image
+
+sudo docker image ls
+sudo docker ps (-a)
+sudo docker start (-ai) abc123
+sudo docker run -d -p 1080:1080 asdf_mock_server
+sudo docker stop asdf_mock_server
+
+## start gen 1 demo app
+
+sudo docker run -d -p 8000:8000 demoapp
+docker run --network="host" -d -p 8000:8000 ardis_demo
+
+## build a docker image from Dockerfile location
+
+sudo docker build -t myImageName .
+
+## stop running processes / containers
+
+sudo docker stop <processId>
+sudo docker rm <processId>
+
+## remove image
+
+sudo docker rmi <imageId>
+
+
+
+
+https://docs.gitlab.com/ee/ci/quick_start/
+https://docs.gitlab.com/ee/ci/yaml/README.html
+https://docs.gitlab.com/runner/#features
+https://docs.gitlab.com/runner/configuration/autoscale.html
+https://docs.gitlab.com/runner/executors/docker.html
+
+
+https://medium.com/backticks-tildes/how-to-dockerize-a-django-application-a42df0cb0a99
+https://medium.com/@alfianeffendy/deployment-automation-with-gitlab-runner-aws-ecs-docker-c3007908f358
+https://about.gitlab.com/2016/08/26/ci-deployment-and-environments/
+
+## ##############################
+## Part 2 - from linkedin learning "Docker for .NET devs with VS"
+## ##############################
+
+docker image ls
+docker rmi <enough of ImageID to make it unique in the list of images>
+
+docker run -it imageName:tag /bin/bash
+-i: run interactively .... can interact with container once running
+-t: psuedo-TTY shell in terminal to container
+
+/bin/bash : command that is run on processId 1 in new container
+
+docker container ls
+
+docker pull imageName:tagName
+
+docker stop <containerId>
+(or)
+"exit" inside container /bin/bash / processId 1
+
+Dockerfile 
+-add to VS sln at top level / inline with Program.cs
+-1st line is From line (build image base on another image)
+- Workdir line: set working directory for future commands
+-Copy . . : copy from pwd on host, to pwd on container
+-RUN dotnet commands ... -c configuration -o output destination (/build/output in this case)
+-aspnetcore vs aspnetcore-build images .... 2gb vs 300mb
+ENTYRPOINT array-style command ([0]) and argument list ([1] - [n])
+
+
+
+FROM microsoft/aspnetcore-build:2.0 AS build
+WORKDIR /build
+COPY . .
+RUN dotnet restore
+RUN dotnet publish -c Release -o output 
+
+FROM microsoft/aspnetcore:2.0
+WORKDIR /app
+COPY --from=build /build/output .
+ENTRYPOINT ["dotnet", "ExampleApp.dll"]
+
+Build an image from Dockerfile
+(download FROM images from hub to host first)
+(building Linux docker image on a Windows host and vice-versa
+
+(run in dir with Dockerfile)
+docker build -t imageName .
+docker image ls
+docker system prune 
+docker run -d --name name_for_container imageName
+docker container ls -a
+docker logs container_name
+
+docker rm container_name
+docker rmi image_name
+
+Creating a Docker Compose file to start up a DB connection
+-1st line version line
+-forward port 5000 of host to port 80 of container
+-use postgres:9.6.3 image from docker hub
+- postgres port isn't necessary for stack to work. is to connect using RDBMS on host
+-volumes: maps a container directory to a host directory
+- in postgres case, volumes: is used to map a postgres image path that looks for SQL scripts to run,
+to a pop script at pwd/db directory on host
+
+
+docker-compose.yml
+
+version: '3'
+
+services:
+	api:
+		image: imageName
+		container_name: containerName
+		build:
+			context: .
+		ports:
+			- 5000:80
+		environment:
+			ASPNETCORE_ENVIRONMENT: Production
+		depends_on:
+			- postgres
+	postgres:
+		image: postgres:9.6.3
+		container_name: conference_db
+		environment:
+			POSTGRES_DB: conference
+			POSTGRES_USER: conf_app
+			POSTGRES_PASSWORD: password
+		ports:
+			-5432:5432
+		volumes:
+			- ./db:/docker-entrypoint-initdb.d
+
+network: (now, default network is created at appname_default)
+
+(run in dir with docker-compose.yml)
+docker-compose up
+docker-compose -f otherfile-yml up
+
+dockerfile builds image
+docker-compose build runs
+
+maybe run docker-compose up 2x?
+race condition first time between images building and containers starting
+2nd time, images are already built. only containers have to start. containers are already created
+due to the depends_on: ...containers will start up in correct order
+
+
+Push images to Docker Hub
+
+docker tag source_image target_image
+docker login
+docker push username/imagename:tagname
+
+
+Docker orchestrators - cluster and scale containers
+Docker for Windows : Docker Swarm
+Google Kuberneters
+Apache Mesosphere
+Docker community on Slack
+developer.okta.com/blog
+
+

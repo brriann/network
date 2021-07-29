@@ -1,0 +1,16 @@
+samba
+openssh-server 
+ufw 
+systemctl
+apache2
+nginx 
+
+
+# TODO:
+1. ftp server
+2. ufw restrict access by IP for samba and ssh (22)
+3. script samba restart when mountable drive inserted
+4. samba process start on startup
+
+
+
