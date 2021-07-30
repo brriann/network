@@ -1,0 +1,19 @@
+HackTheBox
+Messer's video CompTIA Sec+ course
+TCP/IP basics
+Unix/Linux command shell - networking utilities
+Hacker101.com
+pre-OMSCS Networks class
+Stanford Lagunita Intro to Networking
+Graph Theory Algs - Bellman-Ford, Dijkstra's, MST
+Python networking frameworks/libraries
+http://www.tcpipguide.com/free/index.htm
+https://www.tutorialspoint.com/python/python_networking.htm
+CTF/OverTheWire Bandit
+crypto attacks DROWN/LOGJAM/BGP hijacks
+https://www.digitalocean.com/community/tutorials/an-introduction-to-dns-terminology-components-and-concepts
+https://scholarcommons.usf.edu/mca/vol3/iss1/7/
+
+
+
+
