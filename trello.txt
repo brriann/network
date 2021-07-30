@@ -13,6 +13,7 @@ CTF/OverTheWire Bandit
 crypto attacks DROWN/LOGJAM/BGP hijacks
 https://www.digitalocean.com/community/tutorials/an-introduction-to-dns-terminology-components-and-concepts
 https://scholarcommons.usf.edu/mca/vol3/iss1/7/
+https://ifconfig.co/ip
 
 
 
